@@ -1,0 +1,77 @@
+﻿@page "/ShoppingCart/"
+@inherits ShoppingCartBase
+
+@if (!orderPlaced)
+{
+    <h3>Shopping Cart</h3>
+    @if (cartItems == null || cartItems.Count <= 0)
+    {
+        <span>You have no items in your cart.</span>
+    }
+    else
+    {
+        <div class="row">
+            @foreach (var item in cartItems)
+            {
+                var pizza = GetPizza(item.PizzaId);
+                <div class="col-md-2 mb-4">
+                    <img class="item-image" src="@pizza.ImageUrl">       
+                </div>
+                <div class="col-md-8">
+                    <h3 class="mb-2"><a href="/PizzaDetails/@pizza.Id">@pizza.Name</a></h3>
+                    <button class="btn btn-danger btn-delete" @onclick="@(() => DeleteItem(item))">Delete</button>
+                </div>
+                <div class="col-md-1 d-md-flex justify-content-end align-items-center">
+                        <EditForm Model="item">
+                            <InputNumber id="quantity" @bind-Value="item.Quantity"
+                                             class="form-control" style="width: 70px" min="1"/>
+                        </EditForm>
+                </div>
+                <div class="col-md-1 d-md-flex justify-content-end align-items-center">
+                    <div>@(pizza.UnitPrice * item.Quantity) Ft</div>
+                </div>
+            }
+        </div>
+        <div class="item-price">
+                    Total: @cartItems.Sum(item => GetPizza(item.PizzaId).UnitPrice * item.Quantity) Ft
+        </div>
+        <div class="placeorder">
+                <button class="btn btn-secondary" @onclick="PlaceOrder">Place Order</button>
+        </div>
+    }
+}
+else
+{
+    <h3>Thank you for your order!</h3>
+    @if (!lastorderAsk)
+    {
+        <div class="placeorder">
+            <button class="btn btn-secondary" @onclick="GetLastOrder">See Last Order</button>
+        </div>
+    }
+    else
+    {
+        <h4>Here's what you got:</h4>
+        <div class="row">
+        @foreach (var item in cartItems)
+        {
+           var pizza = GetPizza(item.PizzaId);
+           <div class="col-md-2 mb-4">
+                <img class="item-image" src="@pizza.ImageUrl">       
+           </div>
+           <div class="col-md-8">
+                <h3 class="mb-2">@pizza.Name</h3>
+           </div>
+            <div class="col-md-1 d-md-flex justify-content-end align-items-center">
+                 <div>@item.Quantity</div>
+            </div>
+            <div class="col-md-1 d-md-flex justify-content-end align-items-center">
+                    <div>@pizza.UnitPrice Ft</div>
+            </div>
+        }
+    </div>
+    <div class="item-price">
+        Total : @cartItems.Sum(item => GetPizza(item.PizzaId).UnitPrice * item.Quantity) Ft
+    </div>
+    }
+}

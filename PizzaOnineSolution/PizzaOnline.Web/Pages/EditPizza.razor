@@ -1,0 +1,52 @@
+﻿@page "/EditPizza/{Id:int}"
+@inherits EditPizzaBase
+
+@if(ErrorMessage != null)
+{
+    <p>@ErrorMessage</p>    
+}
+
+<h3>Edit @editedPizza.Name</h3>
+
+
+<EditForm Model="editedPizza" OnValidSubmit="HandleEditPizza">
+    <DataAnnotationsValidator/>
+    <div class="form-group mb-2">
+        <label for="name">Name</label>
+        <InputText id="nameInput" @bind-Value="editedPizza.Name"></InputText>
+    </div>
+    <div class="form-group mb-2">
+        <label for="description">Description</label>
+        <InputText id="descriptionInput" @bind-Value="editedPizza.Description"></InputText>
+    </div>
+    <div class="form-group mb-2">
+        <label for="price">Price</label>
+        <InputNumber id="priceInput" @bind-Value="editedPizza.UnitPrice"></InputNumber>
+    </div>
+    <div class="form-group mb-2">
+        <label for="size">Size</label>
+        <InputSelect @bind-Value="editedPizza.Size">
+            <option value="Small">24 cm</option>
+            <option value="Medium">32 cm</option>
+            <option value="Large">45 cm</option>
+        </InputSelect>
+    </div>
+    <div class="form-group mb-2">
+        <label for="size">Stuffed crust</label>
+        <InputSelect @bind-Value="editedPizza.StuffedCrust">
+            <option value="Normal">Normal</option>
+            <option value="Cheese">Cheese</option>
+            <option value="Beacon">Beacon</option>
+            <option value="Jalapeno">Jalapeno</option>
+        </InputSelect>
+    </div>
+    <div class="form-control-file">
+        <label for="image">Image</label>
+        <InputFile OnChange="OnFileChange"/>
+    </div>
+
+    <button type="submit" class="btn btn-secondary btn-add">Save</button>
+    <ValidationSummary/>
+</EditForm>
+
+<ConfirmBox @ref="confirmBox" UserChoice="Confirm_Click"></ConfirmBox>

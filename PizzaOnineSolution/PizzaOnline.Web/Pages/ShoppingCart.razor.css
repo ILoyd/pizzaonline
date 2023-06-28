@@ -1,0 +1,19 @@
+﻿.btn-delete {
+    width: 100px
+}
+
+.item-image {
+    max-height: 150px;
+    max-width: 200px;
+    padding: 6px;
+}
+
+.item-price {
+    font-weight: 600;
+    text-align: right;
+}
+
+.placeorder {
+    text-align: center; 
+    margin-top: 10px;
+}

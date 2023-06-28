@@ -1,0 +1,65 @@
+﻿@page "/"
+@inherits PizzasBase
+@inject NavigationManager Navigation
+
+@code {
+void Navigate()
+{
+    Navigation.NavigateTo("/AddPizza");
+}
+}
+
+@if(Pizzas == null && ErrorMessage == null)
+{
+	<Loading/>
+}
+else if(ErrorMessage !=null && Pizzas == null)
+{
+	<h2 class="text-danger">@ErrorMessage</h2>
+}
+else
+{	
+	if(ErrorMessage !=null && Pizzas != null)
+	{
+	<h2 class="text-danger">@ErrorMessage</h2>
+	}
+
+	<h3 class="mb-5">Pizza list</h3>
+
+	var pizzaCount = Pizzas.Count();
+
+	<button class="btn btn-dark mb-5" @onclick ="@Navigate"><i class="bi-plus"></i> Create Pizza</button>
+
+	@if(pizzaCount > 0)
+	{
+		const int itemsPerRow = 4;
+		var pizzaRowList = new List<PizzaDto>();
+
+		@for(int i = 0; i < pizzaCount; i++)
+		{
+			pizzaRowList = Pizzas.Skip(i * itemsPerRow).Take(itemsPerRow).ToList();
+
+			<div class="row mt-3">
+
+			@foreach (var item in pizzaRowList)
+			{
+				<div class="col-md-3 mb-2">
+					<a href="/PizzaDetails/@item.Id">
+						<div class="card">
+							<img class="img-thumbnail" src="@item.ImageUrl"/>
+							<div class="card-body">
+								<h5 class="card-title mb-3">
+									@item.Name
+								</h5>
+								<p class="card-text">
+									<b>@item.UnitPrice.ToString("C", new System.Globalization.CultureInfo("hu-HU"))</b>
+								</p>
+							</div>
+						</div>
+					</a>
+				</div>
+			}
+			</div>
+		}
+	}
+}

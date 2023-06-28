@@ -1,0 +1,50 @@
+﻿@page "/PizzaDetails/{Id:int}"
+@inherits PizzaDetailsBase
+
+@if(Pizza == null && ErrorMessage == null)
+{
+	<Loading/>
+}
+else if(ErrorMessage !=null)
+{
+	<h2 class="text-danger">@ErrorMessage</h2>
+}
+else
+{
+	<h2 class="mb-5">Pizza Details</h2>
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <img class="img-fluid" src="@Pizza.ImageUrl">       
+        </div>
+        <div class="col-md-6">
+            <div class="row">
+                <div class="row">
+                  <h3 class="m-5" colspan="4">@Pizza.Name</h3>
+                </div>
+                <div class="row">
+                  <div class="col-md-3">
+                    <h5 class="mb-4 d-flex justify-content-end">Size: </h5>
+                    <h5 class="mb-4 d-flex justify-content-end">Stuffed crust: </h5>
+                    <h5 class="mb-4 d-flex justify-content-end">Price: </h5>
+                    <h5 class="mb-4 d-flex justify-content-end">Description: </h5>
+                  </div>
+                  <div class="col-md-9">
+                    <p class="mb-4">@Pizza.Size</p>
+                    <p class="mb-4">@Pizza.StuffedCrust</p>
+                    <p class="mb-4">@Pizza.UnitPrice Ft</p>
+                    <p class="mb-4">@Pizza.Description</p>
+                  </div>
+                </div>
+            </div>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+			    <button type="button" class="btn btn-secondary mt-1" @onclick="AddToCart_OnClick"><i class="bi-cart"></i> Cart</button>
+			    <button type="button" class="btn btn-secondary mt-1" @onclick="Edit_OnClick"><i class="bi-pencil"></i> Edit</button>
+				<button type="button" class="btn btn-secondary mt-1" @onclick="Detele_OnClick"><i class="bi-trash"></i> Delete</button>
+		    </div>
+        </div>
+
+    </div>
+
+}
+
+<ConfirmBox @ref="confirmBox" UserChoice="Confirm_Delete"></ConfirmBox>
